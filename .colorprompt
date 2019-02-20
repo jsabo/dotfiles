@@ -1,5 +1,3 @@
-# color bash prompt by gary@geisbert.com
-
 BLACK="\[\033[0;30m\]"
 DK_RED="\[\033[0;31m\]"
 DK_GRN="\[\033[0;32m\]"
