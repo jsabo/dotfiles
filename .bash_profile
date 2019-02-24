@@ -5,7 +5,7 @@ export EDITOR="vim"
 export HISTIGNORE="&:ls:"
 export HISTSIZE=""
 export GOPATH="$HOME/Source/go"
-export PATH=$PATH:$GOPATH/bin:$HOME/bin
+export PATH="/usr/local/opt/python/libexec/bin:$GOPATH/bin:$HOME/bin:$PATH"
 
 [ -f ~/.bashrc ]        && source ~/.bashrc
 [ -f ~/.colorprompt ]   && source ~/.colorprompt
