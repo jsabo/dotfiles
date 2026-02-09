@@ -1,0 +1,111 @@
+#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+version = 2
+final_space = false
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+
+[palette]
+black   = "#000000"
+dk_red  = "#800000"
+#dk_pur  = "#a1c7ef"   # path color
+dk_pur  = "#c574dd"   # path color
+lt_gray = "#c0c0c0"
+dk_gray = "#555555"
+white   = "#ffffff"
+grey    = "#808080"
+cyan    = "#00ffff"
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  # >>> (dark gray, light gray, white)
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = 'p:dk_gray'
+    background = 'transparent'
+    template = '>'
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = 'p:lt_gray'
+    background = 'transparent'
+    template = '>'
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = 'p:white'
+    background = 'transparent'
+    template = '> '
+
+  # (path) grey parens, purple path text (better contrast)
+  [[blocks.segments]]
+    type = 'path'
+    style = 'plain'
+    background = 'transparent'
+    foreground = 'p:dk_pur'
+    template = '<p:grey>(</><p:dk_pur>{{ .Path }}</><p:grey>)</>'
+
+    [blocks.segments.properties]
+      style = 'full'
+
+  # git (minimal, includes branch glyph + upstream icon e.g. GitHub)
+  [[blocks.segments]]
+    type = 'git'
+    style = 'plain'
+    foreground = 'p:grey'
+    background = 'transparent'
+    template = ' {{ .UpstreamIcon }}{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <p:cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
+
+    [blocks.segments.properties]
+      branch_icon = ' '           # Nerd Font branch glyph
+      fetch_status = true
+      fetch_upstream_icon = true   # enables .UpstreamIcon
+
+[[blocks]]
+  type = 'rprompt'
+  overflow = 'hidden'
+
+  [[blocks.segments]]
+    type = 'executiontime'
+    style = 'plain'
+    foreground = 'p:lt_gray'
+    background = 'transparent'
+    template = '{{ .FormattedMs }}'
+
+    [blocks.segments.properties]
+      threshold = 5000
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  # second line: minimal prompt symbol, red only on non-zero exit
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = 'p:dk_gray'
+    foreground_templates = [
+      '{{ if gt .Code 0 }}p:dk_red{{ end }}'
+    ]
+    background = 'transparent'
+    template = '$ '
+
+[transient_prompt]
+  foreground = 'p:dk_gray'
+  foreground_templates = [
+    '{{ if gt .Code 0 }}p:dk_red{{ end }}'
+  ]
+  background = 'transparent'
+  template = '$ '
+
+[secondary_prompt]
+  foreground = 'p:dk_gray'
+  background = 'transparent'
+  template = '>> '
+
