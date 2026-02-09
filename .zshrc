@@ -35,13 +35,17 @@ compinit
 zinit cdreplay -q
 
 # --- Keybindings --------------------------------------------------------------
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
+bindkey -e
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+bindkey '^[w' kill-region
+
 
 # --- History ------------------------------------------------------------------
 HISTSIZE=1000000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
+HISTDUP=erase
 
 setopt appendhistory
 setopt sharehistory
