@@ -16,9 +16,9 @@ fi
 
 # --- Plugins ------------------------------------------------------------------
 # Completions + autosuggestions + fzf-tab (must load before compinit)
-zinit light zsh-users/zsh-completions
+#zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+#zinit light Aloxaf/fzf-tab
 
 # Oh-My-Zsh snippets (functions/completions/aliases)
 zinit snippet OMZL::git.zsh

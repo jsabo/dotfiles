@@ -8,4 +8,8 @@ export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$HOME/bin:$PATH"
 
 [ -f ~/.bashrc ]        && source ~/.bashrc
-[ -f ~/.colorprompt ]   && source ~/.colorprompt
+
+# --- Prompt (Oh My Posh) ------------------------------------------------------
+if command -v oh-my-posh >/dev/null 2>&1; then
+  eval "$(oh-my-posh init bash --config "$HOME/.config/ohmyposh/sabo.toml")"
+fi
