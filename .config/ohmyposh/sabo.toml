@@ -85,22 +85,15 @@ cyan    = "#00ffff"
   alignment = 'left'
   newline = true
 
-  # second line: minimal prompt symbol, red only on non-zero exit
   [[blocks.segments]]
     type = 'text'
     style = 'plain'
     foreground = 'p:dk_gray'
-    foreground_templates = [
-      '{{ if gt .Code 0 }}p:dk_red{{ end }}'
-    ]
     background = 'transparent'
     template = '$ '
 
 [transient_prompt]
   foreground = 'p:dk_gray'
-  foreground_templates = [
-    '{{ if gt .Code 0 }}p:dk_red{{ end }}'
-  ]
   background = 'transparent'
   template = '$ '
 
