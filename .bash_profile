@@ -10,7 +10,7 @@ export EDITOR="vim"
 export HISTIGNORE="&:ls:"
 export HISTSIZE=""
 export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$HOME/bin:$PATH"
+export PATH="$GOPATH/bin:$HOME/bin:/opt/homebrew/bin:$PATH"
 export EDITOR="vim"
 
 # --- Aliases ------------------------------------------------------------------
@@ -20,3 +20,12 @@ export EDITOR="vim"
 if command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init bash --config "$HOME/.config/ohmyposh/sabo.toml")"
 fi
+
+# Terraform completion
+complete -C /opt/homebrew/bin/terraform terraform
+
+# Teleport bash completion
+eval "$(tsh --completion-script-bash)" 2> /dev/null
+
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
