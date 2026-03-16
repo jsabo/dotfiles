@@ -5,15 +5,16 @@ final_space = false
 console_title_template = '{{ .Shell }} in {{ .Folder }}'
 
 [palette]
-black   = "#000000"
-dk_red  = "#800000"
+black    = "#000000"
+dk_red   = "#800000"
 #dk_pur  = "#a1c7ef"   # path color
-dk_pur  = "#c574dd"   # path color
-lt_gray = "#c0c0c0"
-dk_gray = "#555555"
-white   = "#ffffff"
-grey    = "#808080"
-cyan    = "#00ffff"
+dk_pur   = "#c574dd"   # path color
+lt_gray  = "#c0c0c0"
+dk_gray  = "#555555"
+white    = "#ffffff"
+grey     = "#808080"
+cyan     = "#00ffff"
+teleport = "#ff8800"
 
 [[blocks]]
   type = 'prompt'
@@ -41,6 +42,14 @@ cyan    = "#00ffff"
     foreground = 'p:white'
     background = 'transparent'
     template = '> '
+
+  # Teleport demo identity (shows when TELEPORT_DEMO_USER is set)
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = 'p:teleport'
+    background = 'transparent'
+    template = '{{ if env "TELEPORT_DEMO_USER" }}[{{ env "TELEPORT_DEMO_USER" }}] {{ end }}'
 
   # (path) grey parens, purple path text (better contrast)
   [[blocks.segments]]
@@ -101,4 +110,3 @@ cyan    = "#00ffff"
   foreground = 'p:dk_gray'
   background = 'transparent'
   template = '>> '
-
