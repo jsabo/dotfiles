@@ -14,7 +14,10 @@ dk_gray  = "#555555"
 white    = "#ffffff"
 grey     = "#808080"
 cyan     = "#00ffff"
-teleport = "#ff8800"
+teleport = "#5fd7ff"  # bright blue
+# teleport = "#7ee787"  # soft green
+# teleport = "#78dce8"  # muted cyan
+# teleport = "#ff8800"  # bright orange
 
 [[blocks]]
   type = 'prompt'
