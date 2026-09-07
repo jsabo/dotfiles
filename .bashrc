@@ -44,13 +44,21 @@ teleport_demo_user() {
       export TELEPORT_PROXY="$(_tp_proxy)"
       export TELEPORT_AUTH="okta-integrator"
       ;;
+    # jonathan@sabo.io lives in the Entra ID tenant, not Okta: same per-persona
+    # tsh home pattern, different SSO connector.
+    jonathan)
+      export TELEPORT_DEMO_USER="$1"
+      export TELEPORT_HOME="$(_tp_home "$1")"
+      export TELEPORT_PROXY="$(_tp_proxy)"
+      export TELEPORT_AUTH="entra-id"
+      ;;
     off|clear|reset|none)
       unset TELEPORT_DEMO_USER TELEPORT_HOME TELEPORT_PROXY TELEPORT_AUTH
       echo "Teleport settings cleared"
       return 0
       ;;
     *)
-      echo "Usage: teleport_demo_user {sabo|alice|bob|connor|off}"
+      echo "Usage: teleport_demo_user {sabo|alice|bob|connor|jonathan|off}"
       return 1
       ;;
   esac
@@ -68,13 +76,53 @@ teleport_demo_user() {
   echo "  alice  -> alice@pc3.ai"
   echo "  bob    -> bob@pc3.ai"
   echo "  connor -> connor@pc3.ai"
+  echo "  jonathan -> jonathan@sabo.io (Entra ID)"
 }
 
-tsabo()   { teleport_demo_user sabo; }
-talice()  { teleport_demo_user alice; }
-tbob()    { teleport_demo_user bob; }
-tconnor() { teleport_demo_user connor; }
-tnone()   { teleport_demo_user off; }
+tsabo()     { teleport_demo_user sabo; }
+talice()    { teleport_demo_user alice; }
+tbob()      { teleport_demo_user bob; }
+tconnor()   { teleport_demo_user connor; }
+tjonathan() { teleport_demo_user jonathan; }
+tnone()     { teleport_demo_user off; }
+
+# --- Teleport Connect, one window per persona ---------------------------------
+# Connect keys its profiles by proxy host, so one tsh home can hold ONE user per
+# cluster. Personas therefore need separate homes, and Connect reads its tshHome
+# from app_config.json inside its data directory at startup. Two knobs make a
+# second window possible: Electron's --user-data-dir moves the data directory
+# AND the single-instance lock (main.ts takes the lock before reading any env,
+# so the env var alone is refused as "second instance"), and CONNECT_DATA_DIR
+# (web/packages/teleterm/src/mainProcess/runtimeSettings.ts) relocates home and
+# session data to match. Each persona gets its own Connect window that runs at
+# the same time as the others. The persona's tsh home is the same
+# ~/.tsh-<persona> the t<persona> + tlogin helpers log into — Connect watches
+# that directory, so log in from the terminal (right Chrome profile) and the
+# window picks the session up.
+#
+#   tconnect            # persona from the current shell (after tsabo etc.), or main
+#   tconnect bob        # explicit persona
+#   tconnect main       # the stock Connect: ~/.tsh, jonathan.sabo@goteleport.com
+tconnect() {
+  local app="/Applications/Teleport Connect.app/Contents/MacOS/Teleport Connect"
+  [ -x "$app" ] || { echo "Teleport Connect not found at $app" >&2; return 1; }
+  local p="${1:-${TELEPORT_DEMO_USER:-main}}"
+  case "$p" in
+    main)
+      ( "$app" >/dev/null 2>&1 & ) ;;
+    sabo|alice|bob|connor|jonathan)
+      local data="$HOME/.connect-$p" home
+      home="$(_tp_home "$p")"
+      mkdir -p "$data/userData" "$home"
+      printf '{\n  "$schema": "schema_app_config.json",\n  "tshHome": "%s",\n  "usageReporting.enabled": false\n}\n' \
+        "$home" > "$data/userData/app_config.json"
+      echo "Teleport Connect as $p  (tsh home $home, data $data)"
+      [ -f "$home/current-profile" ] || echo "  not logged in yet: run t$p then tlogin, the window will pick it up"
+      ( CONNECT_DATA_DIR="$data" "$app" --user-data-dir="$data/userData" >/dev/null 2>&1 & ) ;;
+    *)
+      echo "Usage: tconnect {main|sabo|alice|bob|connor|jonathan}" >&2; return 1 ;;
+  esac
+}
 
 # --- Teleport helpers ----------------------------------------------------------
 tlogin() {
