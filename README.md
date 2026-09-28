@@ -7,6 +7,7 @@ This repo contains my shell + terminal config (zsh, tmux, vim, Oh My Posh) manag
 - `~/.zshrc` – Zsh config (plugins via zinit) + Oh My Posh prompt
 - `~/.config/ohmyposh/` – Oh My Posh themes (e.g. `zen.toml`, `sabo.toml`)
 - `~/.config/tmux/tmux.conf` – tmux config (TPM + theme/plugins)
+- `~/.config/ghostty/config` – Ghostty terminal config (theme)
 - `~/.vimrc` – Vim config
 - `~/.bash_profile` – Bash login config (if needed)
 - `.stow-local-ignore` – files Stow should ignore
