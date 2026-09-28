@@ -230,3 +230,6 @@ mcp_call() {
                   "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":{\"name\":\"$2\",\"arguments\":$args}}"
     sleep "${MCP_CALL_WAIT:-10}"; } | tsh mcp connect "$1" 2>/dev/null | grep --line-buffered '"id":2'
 }
+
+# cmux TUI
+export PATH="$HOME/.cmux/bin:$PATH"
