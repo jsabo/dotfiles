@@ -1,13 +1,34 @@
 # ============================================================
-# HERDR THEME
+# HERDR CONFIG
+# ~/.config/herdr/config.toml
+# ============================================================
+
+
+# ============================================================
+# GENERAL
+# ============================================================
+
+# Skip the first-run onboarding screen.
+onboarding = false
+
+
+# ============================================================
+# THEME
 # ============================================================
 
 [theme]
 
-# Start with the terminal theme so Herdr inherits the general
-# color language from Ghostty.
+# Use the host terminal ANSI palette as the base so Herdr feels
+# like part of the Ghostty theme rather than a separate app.
 name = "terminal"
 
+# Keep manual dark-theme behavior.
+auto_switch = false
+
+
+# ============================================================
+# CUSTOM THEME COLORS
+# ============================================================
 
 [theme.custom]
 
@@ -15,19 +36,19 @@ name = "terminal"
 # BACKGROUNDS
 # ------------------------------------------------------------
 
-# Keep terminal/panel surfaces tied to Ghostty.
+# Let normal Herdr panels inherit Ghostty's terminal background.
 panel_bg = "reset"
 
-# Give the sidebar just enough contrast to read as navigation.
+# Slightly darker sidebar so it reads as a navigation rail.
 sidebar_bg = "#1a1b2a"
 
-# Active workspace / focused agent row.
-active_row_bg = "#292c3c"
+# Active Space / focused Agent row.
+active_row_bg = "#303446"
 
-# Navigate-mode selection.
-selection_bg = "#363a4f"
+# Navigate-mode cursor selection.
+selection_bg = "#414559"
 
-# Other subtle UI surfaces.
+# General Herdr UI surfaces.
 surface0 = "#242738"
 surface1 = "#303446"
 surface_dim = "#202334"
@@ -37,11 +58,10 @@ surface_dim = "#202334"
 # TEXT
 # ------------------------------------------------------------
 
-# Primary Herdr UI text.
+# Primary Herdr text.
 text = "#d6def8"
 
-# Workspace names / dim labels. Kept close to the Ghostty
-# foreground so the sidebar stays readable at small sizes.
+# Workspace names and dimmed labels.
 subtext0 = "#c4ccec"
 
 # Muted secondary information.
@@ -50,25 +70,214 @@ overlay0 = "#949ab7"
 # Brighter secondary information.
 overlay1 = "#bac2de"
 
-
-# ------------------------------------------------------------
-# ACCENTS
-# ------------------------------------------------------------
-
-# Main Herdr navigation/border accent.
-accent = "#91b4ff"
-
 # Git branches / special labels.
 mauve = "#e0b0ff"
 
 
 # ------------------------------------------------------------
-# STATUS COLORS
+# ACCENTS / STATUS
 # ------------------------------------------------------------
 
+# Muted navigation accent.
+# Used for active tabs, borders, highlights and navigation UI.
+accent = "#7f849c"
+
+# Agent / notification states.
 green = "#b0e39f"
 yellow = "#f5dca6"
 red = "#f093a1"
+
+# Keep semantic blue brighter than the navigation accent.
 blue = "#91b4ff"
+
 teal = "#91e0d3"
 peach = "#f5a97f"
+
+
+# ============================================================
+# UI
+# ============================================================
+
+[ui]
+
+# Match the muted navigation accent used above.
+accent = "#7f849c"
+
+# Sidebar width in terminal columns.
+sidebar_width = 26
+sidebar_min_width = 18
+sidebar_max_width = 36
+
+# Start with the sidebar visible.
+sidebar_start_collapsed = false
+
+# If collapsed manually, keep the compact icon/label version.
+sidebar_collapsed_mode = "compact"
+
+# Herdr mouse UI.
+mouse_capture = true
+
+# Copy terminal text automatically when selecting it.
+copy_on_select = true
+
+# Let Herdr choose the most appropriate cursor implementation.
+host_cursor = "auto"
+
+# Force a redraw when Ghostty regains focus.
+redraw_on_focus_gained = true
+
+# Mouse-wheel amount per notch.
+mouse_scroll_lines = 3
+
+# Ask before closing an entire workspace.
+confirm_close = true
+
+# Ask for names when creating tabs.
+prompt_new_tab_name = true
+
+# Don't interrupt workspace creation with a naming dialog.
+prompt_new_workspace_name = false
+
+
+# ============================================================
+# PANES
+# ============================================================
+
+# Draw dividers between split panes.
+pane_borders = "auto"
+
+# Remove the large outside rectangular frame around each pane.
+# This gives a cleaner tmux/cmux-style layout.
+pane_outer_borders = false
+
+# Hide interactive pane scrollbars.
+# Scrolling still works with the mouse wheel / trackpad.
+pane_scrollbars = false
+
+# Remove the extra gap between panes so neighboring panes share
+# a single clean internal divider.
+pane_gaps = false
+
+# Don't add agent labels directly to pane borders.
+show_agent_labels_on_pane_borders = false
+
+
+# ============================================================
+# TAB BAR
+# ============================================================
+
+# Keep Herdr's tab row at the top.
+tab_bar_position = "top"
+
+# Hide the tab bar when there is only one tab.
+# It reappears automatically when tab 2 exists.
+hide_tab_bar_when_single_tab = true
+
+# Keep right side of the tab bar clean.
+tab_bar_right = []
+
+# Separator used if tab-bar widgets are added later.
+tab_bar_right_separator = " "
+
+
+# ============================================================
+# WINDOW TITLE
+# ============================================================
+
+# Title written to Ghostty.
+window_title = "{hostname}: {workspace}"
+
+
+# ============================================================
+# AGENT SIDEBAR
+# ============================================================
+
+# Group agents by their Spaces.
+agent_panel_sort = "spaces"
+
+# Use colored state dots rather than symbols.
+status_indicators = "dots"
+
+
+# ============================================================
+# SIDEBAR LAYOUT
+# ============================================================
+
+[ui.sidebar.agents]
+
+# Keep agent rows compact.
+row_gap = 0
+
+# Default expanded Agent display:
+#   line 1: state, machine/workspace/tab
+#   line 2: agent name
+rows = [
+  ["state_icon", "machine", "workspace", "tab"],
+  ["agent"],
+]
+
+
+[ui.sidebar.spaces]
+
+# Keep Space rows tight.
+row_gap = 0
+
+# Default expanded Space display:
+#   line 1: workspace
+#   line 2: branch + git status
+rows = [
+  ["state_icon", "workspace"],
+  ["branch", "git_status"],
+]
+
+
+# ============================================================
+# NOTIFICATIONS
+# ============================================================
+
+[ui.toast]
+
+# Leave popups disabled while testing.
+delivery = "off"
+
+# Small debounce before a completed/blocked state becomes a notification.
+delay_seconds = 1
+
+
+[ui.toast.herdr]
+
+position = "bottom-right"
+
+
+[ui.toast.clipboard]
+
+enabled = true
+position = "bottom-center"
+
+
+# ============================================================
+# SOUND
+# ============================================================
+
+[ui.sound]
+
+enabled = false
+
+
+# ============================================================
+# TERMINAL
+# ============================================================
+
+[terminal]
+
+# Empty means use your normal shell.
+default_shell = ""
+
+# On macOS Herdr will use a login shell automatically.
+shell_mode = "auto"
+
+# New panes follow the source pane/workspace directory.
+new_cwd = "follow"
+
+# Keep Kitty-graphics support available for compatible panes.
+kitty_graphics = true
