@@ -1,0 +1,74 @@
+# ============================================================
+# HERDR THEME
+# ============================================================
+
+[theme]
+
+# Start with the terminal theme so Herdr inherits the general
+# color language from Ghostty.
+name = "terminal"
+
+
+[theme.custom]
+
+# ------------------------------------------------------------
+# BACKGROUNDS
+# ------------------------------------------------------------
+
+# Keep terminal/panel surfaces tied to Ghostty.
+panel_bg = "reset"
+
+# Give the sidebar just enough contrast to read as navigation.
+sidebar_bg = "#1a1b2a"
+
+# Active workspace / focused agent row.
+active_row_bg = "#292c3c"
+
+# Navigate-mode selection.
+selection_bg = "#363a4f"
+
+# Other subtle UI surfaces.
+surface0 = "#242738"
+surface1 = "#303446"
+surface_dim = "#202334"
+
+
+# ------------------------------------------------------------
+# TEXT
+# ------------------------------------------------------------
+
+# Primary Herdr UI text.
+text = "#d6def8"
+
+# Workspace names / dim labels. Kept close to the Ghostty
+# foreground so the sidebar stays readable at small sizes.
+subtext0 = "#c4ccec"
+
+# Muted secondary information.
+overlay0 = "#949ab7"
+
+# Brighter secondary information.
+overlay1 = "#bac2de"
+
+
+# ------------------------------------------------------------
+# ACCENTS
+# ------------------------------------------------------------
+
+# Main Herdr navigation/border accent.
+accent = "#91b4ff"
+
+# Git branches / special labels.
+mauve = "#e0b0ff"
+
+
+# ------------------------------------------------------------
+# STATUS COLORS
+# ------------------------------------------------------------
+
+green = "#b0e39f"
+yellow = "#f5dca6"
+red = "#f093a1"
+blue = "#91b4ff"
+teal = "#91e0d3"
+peach = "#f5a97f"

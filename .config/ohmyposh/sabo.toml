@@ -4,119 +4,160 @@ version = 2
 final_space = false
 console_title_template = '{{ .Shell }} in {{ .Folder }}'
 
-#[palette]
-#black    = "#000000"
-#dk_red   = "#800000"
-#dk_pur   = "#c574dd"   # path color
-#lt_gray  = "#c0c0c0"
-#dk_gray  = "#555555"
-#white    = "#ffffff"
-#grey     = "#808080"
-#cyan     = "#00ffff"
-#teleport = "#5fd7ff"  # bright blue
+
+# ============================================================
+# PALETTE
+# ============================================================
 
 [palette]
-black    = "#000000"
-dk_red   = "#800000"
+
+# Main path
 dk_pur   = "#e0b0ff"
+
+# Prompt / Git hierarchy
 dk_gray  = "#8b90aa"
 grey     = "#bac2de"
 lt_gray  = "#cdd6f4"
 white    = "#f5f7ff"
+
+# Git ahead / behind
 cyan     = "#94e2d5"
+
+# Teleport persona
 teleport = "#5fd7ff"
 
-[[blocks]]
-  type = 'prompt'
-  alignment = 'left'
-  newline = true
 
-  # >>> (dark gray, light gray, white)
-  [[blocks.segments]]
-    type = 'text'
-    style = 'plain'
-    foreground = 'p:dk_gray'
-    background = 'transparent'
-    template = '>'
-
-  [[blocks.segments]]
-    type = 'text'
-    style = 'plain'
-    foreground = 'p:lt_gray'
-    background = 'transparent'
-    template = '>'
-
-  [[blocks.segments]]
-    type = 'text'
-    style = 'plain'
-    foreground = 'p:white'
-    background = 'transparent'
-    template = '> '
-
-  # Teleport demo identity (shows when TELEPORT_DEMO_USER is set)
-  [[blocks.segments]]
-    type = 'text'
-    style = 'plain'
-    foreground = 'p:teleport'
-    background = 'transparent'
-    template = '{{ if env "TELEPORT_DEMO_USER" }}[{{ env "TELEPORT_DEMO_USER" }}] {{ end }}'
-
-  # (path) grey parens, purple path text (better contrast)
-  [[blocks.segments]]
-    type = 'path'
-    style = 'plain'
-    background = 'transparent'
-    foreground = 'p:dk_pur'
-    template = '<p:grey>(</><p:dk_pur>{{ .Path }}</><p:grey>)</>'
-
-    [blocks.segments.properties]
-      style = 'full'
-
-  # git (minimal, includes branch glyph + upstream icon e.g. GitHub)
-  [[blocks.segments]]
-    type = 'git'
-    style = 'plain'
-    foreground = 'p:grey'
-    background = 'transparent'
-    template = ' {{ .UpstreamIcon }}{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <p:cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
-
-    [blocks.segments.properties]
-      branch_icon = ' '           # Nerd Font branch glyph
-      fetch_status = true
-      fetch_upstream_icon = true   # enables .UpstreamIcon
+# ============================================================
+# MAIN PROMPT
+# ============================================================
 
 [[blocks]]
-  type = 'rprompt'
-  overflow = 'hidden'
+type = 'prompt'
+alignment = 'left'
+newline = true
 
-  [[blocks.segments]]
-    type = 'executiontime'
-    style = 'plain'
-    foreground = 'p:lt_gray'
-    background = 'transparent'
-    template = '{{ .FormattedMs }}'
 
-    [blocks.segments.properties]
-      threshold = 5000
+# ============================================================
+# >>> PROMPT PREFIX
+# ============================================================
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+foreground = 'p:dk_gray'
+background = 'transparent'
+template = '>'
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+foreground = 'p:lt_gray'
+background = 'transparent'
+template = '>'
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+foreground = 'p:white'
+background = 'transparent'
+template = '> '
+
+
+# ============================================================
+# TELEPORT DEMO IDENTITY
+# ============================================================
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+foreground = 'p:teleport'
+background = 'transparent'
+template = '{{ if env "TELEPORT_DEMO_USER" }}[{{ env "TELEPORT_DEMO_USER" }}] {{ end }}'
+
+
+# ============================================================
+# PATH
+# ============================================================
+
+[[blocks.segments]]
+type = 'path'
+style = 'plain'
+background = 'transparent'
+foreground = 'p:dk_pur'
+template = '<p:grey>(</><p:dk_pur>{{ .Path }}</><p:grey>)</>'
+
+[blocks.segments.properties]
+style = 'full'
+
+
+# ============================================================
+# GIT
+# ============================================================
+
+[[blocks.segments]]
+type = 'git'
+style = 'plain'
+foreground = 'p:grey'
+background = 'transparent'
+template = ' {{ .UpstreamIcon }}{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <p:cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
+
+[blocks.segments.properties]
+branch_icon = ' '
+fetch_status = true
+fetch_upstream_icon = true
+
+
+# ============================================================
+# RIGHT PROMPT
+# ============================================================
 
 [[blocks]]
-  type = 'prompt'
-  alignment = 'left'
-  newline = true
+type = 'rprompt'
+overflow = 'hidden'
 
-  [[blocks.segments]]
-    type = 'text'
-    style = 'plain'
-    foreground = 'p:dk_gray'
-    background = 'transparent'
-    template = '$ '
+[[blocks.segments]]
+type = 'executiontime'
+style = 'plain'
+foreground = 'p:lt_gray'
+background = 'transparent'
+template = '{{ .FormattedMs }}'
+
+[blocks.segments.properties]
+threshold = 5000
+
+
+# ============================================================
+# COMMAND PROMPT
+# ============================================================
+
+[[blocks]]
+type = 'prompt'
+alignment = 'left'
+newline = true
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+foreground = 'p:dk_gray'
+background = 'transparent'
+template = '$ '
+
+
+# ============================================================
+# TRANSIENT PROMPT
+# ============================================================
 
 [transient_prompt]
-  foreground = 'p:dk_gray'
-  background = 'transparent'
-  template = '$ '
+foreground = 'p:dk_gray'
+background = 'transparent'
+template = '$ '
+
+
+# ============================================================
+# SECONDARY PROMPT
+# ============================================================
 
 [secondary_prompt]
-  foreground = 'p:dk_gray'
-  background = 'transparent'
-  template = '>> '
+foreground = 'p:dk_gray'
+background = 'transparent'
+template = '>> '

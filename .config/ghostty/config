@@ -39,10 +39,7 @@ window-padding-y = 0
 # Do not redistribute unused grid space onto the top edge.
 window-padding-balance = false
 
-# Keep the polished macOS titlebar while letting the terminal
-# background extend through the titlebar.
-#
-# This does NOT make the terminal content area transparent.
+# Keep the integrated macOS titlebar.
 macos-titlebar-style = transparent
 
 # Keep macOS window chrome dark.
@@ -54,12 +51,9 @@ window-theme = dark
 # ============================================================
 
 # Fully opaque terminal background.
-#
-# This keeps the terminal's appearance consistent regardless
-# of what applications or windows are behind Ghostty.
 background-opacity = 1
 
-# No blur is necessary with a fully opaque background.
+# No blur when the terminal is fully opaque.
 background-blur = 0
 
 # Prevent extremely low-contrast text from disappearing.
@@ -81,9 +75,12 @@ foreground = #d6def8
 # ANSI COLOR PALETTE
 # ============================================================
 
-# Black / subdued gray
+# Black / secondary gray
 palette = 0=#494d64
-palette = 8=#6e738d
+
+# Bright black is used for dim text; keep it readable on the
+# dark background.
+palette = 8=#7f849c
 
 # Red
 palette = 1=#ed8796
@@ -126,10 +123,7 @@ selection-foreground = #d6def8
 # CURSOR
 # ============================================================
 
-# Clean modern bar cursor.
 cursor-style = bar
-
-# Keep it stationary rather than blinking.
 cursor-style-blink = false
 
 # Slightly stronger cursor.
@@ -151,5 +145,4 @@ split-divider-color = #51576d
 # MOUSE
 # ============================================================
 
-# Hide mouse pointer while typing.
 mouse-hide-while-typing = true
