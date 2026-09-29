@@ -4,20 +4,27 @@ version = 2
 final_space = false
 console_title_template = '{{ .Shell }} in {{ .Folder }}'
 
+#[palette]
+#black    = "#000000"
+#dk_red   = "#800000"
+#dk_pur   = "#c574dd"   # path color
+#lt_gray  = "#c0c0c0"
+#dk_gray  = "#555555"
+#white    = "#ffffff"
+#grey     = "#808080"
+#cyan     = "#00ffff"
+#teleport = "#5fd7ff"  # bright blue
+
 [palette]
 black    = "#000000"
 dk_red   = "#800000"
-#dk_pur  = "#a1c7ef"   # path color
-dk_pur   = "#c574dd"   # path color
-lt_gray  = "#c0c0c0"
-dk_gray  = "#555555"
-white    = "#ffffff"
-grey     = "#808080"
-cyan     = "#00ffff"
-teleport = "#5fd7ff"  # bright blue
-# teleport = "#7ee787"  # soft green
-# teleport = "#78dce8"  # muted cyan
-# teleport = "#ff8800"  # bright orange
+dk_pur   = "#e0b0ff"
+dk_gray  = "#8b90aa"
+grey     = "#bac2de"
+lt_gray  = "#cdd6f4"
+white    = "#f5f7ff"
+cyan     = "#94e2d5"
+teleport = "#5fd7ff"
 
 [[blocks]]
   type = 'prompt'

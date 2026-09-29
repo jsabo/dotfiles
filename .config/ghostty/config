@@ -1,1 +1,155 @@
-theme = Catppuccin Frappe
+# ============================================================
+# GHOSTTY CONFIG
+# ============================================================
+
+
+# ============================================================
+# FONT / TYPOGRAPHY
+# ============================================================
+
+font-family = MesloLGM Nerd Font Mono
+font-size = 14
+
+# Slightly thicken font rendering on macOS without switching
+# to the actual bold face.
+font-thicken = true
+font-thicken-strength = 95
+
+# Use the font's real bold / italic variants.
+font-synthetic-style = false
+
+# Slightly increase vertical spacing while remaining compact.
+adjust-cell-height = 3%
+
+# Make box drawing characters / separators slightly stronger.
+adjust-box-thickness = 1
+
+
+# ============================================================
+# WINDOW
+# ============================================================
+
+# Comfortable horizontal padding.
+window-padding-x = 12
+
+# No additional vertical padding.
+# The macOS titlebar already provides visual separation.
+window-padding-y = 0
+
+# Do not redistribute unused grid space onto the top edge.
+window-padding-balance = false
+
+# Keep the polished macOS titlebar while letting the terminal
+# background extend through the titlebar.
+#
+# This does NOT make the terminal content area transparent.
+macos-titlebar-style = transparent
+
+# Keep macOS window chrome dark.
+window-theme = dark
+
+
+# ============================================================
+# BACKGROUND / APPEARANCE
+# ============================================================
+
+# Fully opaque terminal background.
+#
+# This keeps the terminal's appearance consistent regardless
+# of what applications or windows are behind Ghostty.
+background-opacity = 1
+
+# No blur is necessary with a fully opaque background.
+background-blur = 0
+
+# Prevent extremely low-contrast text from disappearing.
+minimum-contrast = 1.2
+
+
+# ============================================================
+# COLORS
+# ============================================================
+
+# Dark blue-charcoal background.
+background = #1e2030
+
+# Soft bright foreground.
+foreground = #d6def8
+
+
+# ============================================================
+# ANSI COLOR PALETTE
+# ============================================================
+
+# Black / subdued gray
+palette = 0=#494d64
+palette = 8=#6e738d
+
+# Red
+palette = 1=#ed8796
+palette = 9=#f093a1
+
+# Green
+palette = 2=#a6da95
+palette = 10=#b0e39f
+
+# Yellow
+palette = 3=#eed49f
+palette = 11=#f5dca6
+
+# Blue
+palette = 4=#91b4ff
+palette = 12=#91b4ff
+
+# Magenta
+palette = 5=#d0a7ff
+palette = 13=#d0a7ff
+
+# Cyan
+palette = 6=#91e0d3
+palette = 14=#91e0d3
+
+# White
+palette = 7=#c4ccec
+palette = 15=#d6def8
+
+
+# ============================================================
+# SELECTION
+# ============================================================
+
+selection-background = #363a4f
+selection-foreground = #d6def8
+
+
+# ============================================================
+# CURSOR
+# ============================================================
+
+# Clean modern bar cursor.
+cursor-style = bar
+
+# Keep it stationary rather than blinking.
+cursor-style-blink = false
+
+# Slightly stronger cursor.
+adjust-cursor-thickness = 1
+
+
+# ============================================================
+# SPLITS
+# ============================================================
+
+# Very subtle inactive-pane dimming.
+unfocused-split-opacity = 0.98
+
+# Visible but understated divider.
+split-divider-color = #51576d
+
+
+# ============================================================
+# MOUSE
+# ============================================================
+
+# Hide mouse pointer while typing.
+mouse-hide-while-typing = true
