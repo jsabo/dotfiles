@@ -8,7 +8,7 @@
 # ============================================================
 
 font-family = MesloLGM Nerd Font Mono
-font-size = 14
+font-size = 16
 
 # Slightly thicken font rendering on macOS without switching
 # to the actual bold face.
