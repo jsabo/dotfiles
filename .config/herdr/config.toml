@@ -280,6 +280,23 @@ enabled = false
 
 
 # ============================================================
+# KEYS
+# ============================================================
+
+# Teleport Beams plugin (jsabo.beams): create a Beam and add it to the
+# machines rail, or start an agent in one. Both open as popups.
+[[keys.command]]
+key = "prefix+alt+b"
+type = "shell"
+command = "herdr plugin pane open --plugin jsabo.beams --entrypoint new"
+
+[[keys.command]]
+key = "prefix+alt+a"
+type = "shell"
+command = "herdr plugin pane open --plugin jsabo.beams --entrypoint agent"
+
+
+# ============================================================
 # TERMINAL
 # ============================================================
 
