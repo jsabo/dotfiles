@@ -9,7 +9,7 @@ This repo contains my shell + terminal config (bash, zsh, Ghostty, herdr, tmux, 
 - `~/.colorprompt` – ANSI color variables for a hand-built PS1; not sourced by the current shell configs, kept for reference
 - `~/.config/ohmyposh/` – Oh My Posh themes (`sabo.toml` is the active one, `zen.toml` an alternative)
 - `~/.config/ghostty/config` – Ghostty terminal config (font, window, custom color palette)
-- `~/.config/herdr/config.toml` – herdr theme overrides matching the Ghostty palette
+- `~/.config/herdr/config.toml` – herdr theme overrides matching the Ghostty palette, sidebar rows (agent state word, Claude activity title), tab-bar status (hostname, beam-init service count, clock) and macOS notifications
 - `~/.config/tmux/tmux.conf` – tmux config (TPM + theme/plugins)
 - `~/.vimrc` – Vim config
 - `.stow-local-ignore` – files Stow should ignore

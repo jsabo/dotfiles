@@ -173,11 +173,16 @@ tab_bar_position = "top"
 # It reappears automatically when tab 2 exists.
 hide_tab_bar_when_single_tab = true
 
-# Keep right side of the tab bar clean.
-tab_bar_right = []
+# Right side of the tab bar. hostname and command resolve on the
+# selected machine's server, so on a Beam this shows the Beam's
+# hostname and its beam-init service count.
+tab_bar_right = [
+  { type = "hostname" },
+  { type = "command", command = "command -v beamctl >/dev/null && beamctl list 2>/dev/null | tail -n +2 | grep -c . | sed 's/$/ svc/'", interval_seconds = 10, timeout_seconds = 3 },
+  { type = "datetime", format = "%H:%M" },
+]
 
-# Separator used if tab-bar widgets are added later.
-tab_bar_right_separator = " "
+tab_bar_right_separator = " · "
 
 
 # ============================================================
@@ -195,8 +200,9 @@ window_title = "{hostname}: {workspace}"
 # Group agents by their Spaces.
 agent_panel_sort = "spaces"
 
-# Use colored state dots rather than symbols.
-status_indicators = "dots"
+# Distinct glyphs per state (blocked, working, idle, done) so the
+# state reads by shape as well as colour.
+status_indicators = "symbols"
 
 
 # ============================================================
@@ -208,12 +214,20 @@ status_indicators = "dots"
 # Keep agent rows compact.
 row_gap = 0
 
-# Default expanded Agent display:
-#   line 1: state, machine/workspace/tab
-#   line 2: agent name
+# Expanded Agent display:
+#   line 1: state glyph, machine (only with >1 machine), workspace, agent
+#   line 2: state word (idle / working / blocked / done)
 rows = [
-  ["state_icon", "machine", "workspace", "tab"],
-  ["agent"],
+  ["state_icon", "machine", "workspace", "agent"],
+  ["state_text"],
+]
+
+# Claude Code also gets its own activity title (what it is doing now).
+[ui.sidebar.agents.rows_by_agent]
+claude = [
+  ["state_icon", "machine", "workspace", "agent"],
+  ["state_text"],
+  ["terminal_title_stripped"],
 ]
 
 
@@ -222,11 +236,11 @@ rows = [
 # Keep Space rows tight.
 row_gap = 0
 
-# Default expanded Space display:
-#   line 1: workspace
+# Expanded Space display:
+#   line 1: rolled-up agent state glyph, workspace, state word
 #   line 2: branch + git status
 rows = [
-  ["state_icon", "workspace"],
+  ["state_icon", "workspace", "state_text"],
   ["branch", "git_status"],
 ]
 
@@ -237,8 +251,9 @@ rows = [
 
 [ui.toast]
 
-# Leave popups disabled while testing.
-delivery = "off"
+# macOS notifications when a background agent finishes or blocks
+# (uses terminal-notifier when installed, osascript otherwise).
+delivery = "system"
 
 # Small debounce before a completed/blocked state becomes a notification.
 delay_seconds = 1
