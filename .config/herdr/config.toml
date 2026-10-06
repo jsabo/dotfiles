@@ -284,14 +284,15 @@ enabled = false
 # ============================================================
 
 # Teleport Beams plugin (herdr-beams): create a Beam and add it to the
-# machines rail, or start an agent in one. Both open as popups.
+# machines rail, or start an agent in one. Both open as popups. ctrl+alt
+# because macOS composes plain alt chords into characters (herdr keyboard guide).
 [[keys.command]]
-key = "prefix+alt+b"
+key = "ctrl+alt+b"
 type = "shell"
 command = "herdr plugin pane open --plugin herdr-beams --entrypoint new"
 
 [[keys.command]]
-key = "prefix+alt+a"
+key = "ctrl+alt+a"
 type = "shell"
 command = "herdr plugin pane open --plugin herdr-beams --entrypoint agent"
 
