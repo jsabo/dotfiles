@@ -284,7 +284,10 @@ enabled = false
 # ============================================================
 
 # Teleport Beams plugin (herdr-beams): create a Beam and add it to the
-# machines rail, start an agent in one, or see every Beam. All open as popups.
+# machines rail, start an agent in one, see every Beam, remove one or remove
+# them all. All open as popups. The way in is ctrl+alt+a (creates a Beam if
+# there is none, then starts the agent); the way out is ctrl+alt+x (every Beam
+# and sidebar entry gone after one y), then ctrl+b q to detach from herdr.
 # ctrl+alt because macOS composes plain alt chords into characters (herdr
 # keyboard guide). plugin_action bindings name <plugin id>.<action id>; the
 # plugin's actions open its popups, so herdr needs no PATH to find itself.
@@ -305,6 +308,18 @@ key = "ctrl+alt+s"
 type = "plugin_action"
 command = "herdr-beams.status"
 description = "Beam status"
+
+[[keys.command]]
+key = "ctrl+alt+d"
+type = "plugin_action"
+command = "herdr-beams.rm"
+description = "remove a Beam"
+
+[[keys.command]]
+key = "ctrl+alt+x"
+type = "plugin_action"
+command = "herdr-beams.rm-all"
+description = "remove every Beam"
 
 
 # ============================================================
