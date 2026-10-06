@@ -285,38 +285,41 @@ enabled = false
 
 # Teleport Beams plugin (herdr-beams): create a Beam and add it to the
 # machines rail, start an agent in one, see every Beam, remove one or remove
-# them all. All open as popups. The way in is ctrl+alt+a (creates a Beam if
-# there is none, then starts the agent); the way out is ctrl+alt+x (every Beam
-# and sidebar entry gone after one y), then ctrl+b q to detach from herdr.
-# ctrl+alt because macOS composes plain alt chords into characters (herdr
-# keyboard guide). plugin_action bindings name <plugin id>.<action id>; the
-# plugin's actions open its popups, so herdr needs no PATH to find itself.
+# them all. All open as popups. The way in is prefix+a (creates a Beam if
+# there is none, then starts the agent); the way out is prefix+shift+q (every
+# Beam and sidebar entry gone after one y), then prefix+q to detach from herdr.
+# Prefix chords, like every other public herdr plugin: only herdr sees the key
+# after ctrl+b, so no terminal or window manager can take it (Magnet owned
+# ctrl+alt+d, KDE/Konsole own ctrl+alt+a and ctrl+alt+s). prefix+b toggles the
+# sidebar and prefix+shift+d closes the workspace, hence shift+b and shift+q.
+# plugin_action bindings name <plugin id>.<action id>; the plugin's actions
+# open its popups, so herdr needs no PATH to find itself.
 [[keys.command]]
-key = "ctrl+alt+b"
+key = "prefix+shift+b"
 type = "plugin_action"
 command = "herdr-beams.new"
 description = "new Beam"
 
 [[keys.command]]
-key = "ctrl+alt+a"
+key = "prefix+a"
 type = "plugin_action"
 command = "herdr-beams.agent"
 description = "start an agent in a Beam"
 
 [[keys.command]]
-key = "ctrl+alt+s"
+key = "prefix+s"
 type = "plugin_action"
 command = "herdr-beams.status"
 description = "Beam status"
 
 [[keys.command]]
-key = "ctrl+alt+d"
+key = "prefix+d"
 type = "plugin_action"
 command = "herdr-beams.rm"
 description = "remove a Beam"
 
 [[keys.command]]
-key = "ctrl+alt+x"
+key = "prefix+shift+q"
 type = "plugin_action"
 command = "herdr-beams.rm-all"
 description = "remove every Beam"
