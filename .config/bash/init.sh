@@ -25,6 +25,7 @@ elif [ -x /usr/local/bin/brew ]; then
 fi
 if [ -n "${HOMEBREW_PREFIX:-}" ]; then
   export HOMEBREW_PREFIX
+  _dotfiles_prepend_path "$HOMEBREW_PREFIX/sbin"
   _dotfiles_prepend_path "$HOMEBREW_PREFIX/bin"
   _dotfiles_prepend_path "$HOMEBREW_PREFIX/opt/postgresql@17/bin"
   _dotfiles_prepend_path "$HOMEBREW_PREFIX/opt/mysql-client/bin"

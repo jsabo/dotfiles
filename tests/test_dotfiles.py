@@ -161,12 +161,15 @@ class Dotfiles(unittest.TestCase):
         bindir.mkdir()
         prefix = self.home / 'custom-brew'
         (prefix / 'bin').mkdir(parents=True)
+        (prefix / 'sbin').mkdir()
         brew = bindir / 'brew'
         brew.write_text('#!/bin/sh\nprintf "%s\\n" "'+str(prefix)+'"\n')
         brew.chmod(0o755)
         self.shell('. "$HOME/.config/bash/init.sh"; '
                    'test "$HOMEBREW_PREFIX" = "$HOME/custom-brew"; '
-                   'case ":$PATH:" in *":$HOME/custom-brew/bin:"*) ;; *) exit 1 ;; esac',
+                   'case ":$PATH:" in *":$HOME/custom-brew/bin:$HOME/custom-brew/sbin:"*) ;; *) exit 1 ;; esac; '
+                   'original_path="$PATH"; unset DOTFILES_BASH_INITIALIZED; '
+                   '. "$HOME/.config/bash/init.sh"; test "$PATH" = "$original_path"',
                    PATH=str(bindir)+':/usr/bin:/bin')
 
     def test_native_tsh_cluster_is_preserved_and_helper_selection_is_inherited(self):
