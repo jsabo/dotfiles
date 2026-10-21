@@ -283,17 +283,16 @@ enabled = false
 # KEYS
 # ============================================================
 
-# Teleport Beams plugin (herdr-beams): create a Beam and add it to the
-# machines rail, start an agent in one, see every Beam, remove one or remove
-# them all. All open as popups. The way in is prefix+a (creates a Beam if
-# there is none, then starts the agent); the way out is prefix+shift+q (every
-# Beam and sidebar entry gone after one y), then prefix+q to detach from herdr.
-# Prefix chords, like every other public herdr plugin: only herdr sees the key
-# after ctrl+b, so no terminal or window manager can take it (Magnet owned
-# ctrl+alt+d, KDE/Konsole own ctrl+alt+a and ctrl+alt+s). prefix+b toggles the
-# sidebar and prefix+shift+d closes the workspace, hence shift+b and shift+q.
-# plugin_action bindings name <plugin id>.<action id>; the plugin's actions
-# open its popups, so herdr needs no PATH to find itself.
+# Teleport Beams plugin (herdr-beams): all actions open popups.
+# prefix+a chooses a launch profile; prefix+shift+c and prefix+shift+o launch
+# the configured Claude and Codex profiles directly.
+# Select Local in the sidebar before using plugin keybindings.
+# Actions skip y/N confirmations unless BEAMS_YES=0 is set in the plugin's
+# env file; workspace labels and prompts are still collected interactively.
+# prefix+shift+q deletes every Beam; prefix+q detaches from herdr.
+# Prefix chords avoid terminal/window-manager conflicts. prefix+b toggles
+# the sidebar and prefix+shift+d closes the workspace, hence shift+b/shift+q.
+# plugin_action bindings name <plugin id>.<action id>.
 [[keys.command]]
 key = "prefix+shift+b"
 type = "plugin_action"
@@ -303,8 +302,20 @@ description = "new Beam"
 [[keys.command]]
 key = "prefix+a"
 type = "plugin_action"
-command = "herdr-beams.agent"
-description = "start an agent in a Beam"
+command = "herdr-beams.profiles"
+description = "choose agent profile in a Beam"
+
+[[keys.command]]
+key = "prefix+shift+c"
+type = "plugin_action"
+command = "herdr-beams.claude"
+description = "launch Claude in a Beam"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "herdr-beams.codex"
+description = "launch Codex in a Beam"
 
 [[keys.command]]
 key = "prefix+s"
