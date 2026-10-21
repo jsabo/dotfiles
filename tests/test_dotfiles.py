@@ -156,6 +156,33 @@ class Dotfiles(unittest.TestCase):
         self.assertFalse(legacy.is_symlink())
         self.assertEqual(independent.read_text(), 'personal settings')
 
+    def test_tsh_completion_ignores_only_missing_generic_command(self):
+        bindir = self.home / 'bin'
+        bindir.mkdir()
+        tsh = bindir / 'tsh'
+        tsh.write_text("""#!/bin/sh
+cat <<'COMPLETION'
+__bash_autocomplete() { :; }
+_tsh_bash_autocomplete() { :; }
+PROG=
+complete -F __bash_autocomplete -o default $PROG
+complete -F __bash_autocomplete -o default "$PROG"
+complete -F __bash_autocomplete -o default bundled-agent
+complete -F _tsh_bash_autocomplete -o default tsh
+COMPLETION
+""")
+        tsh.chmod(0o755)
+        for previous in ['', 'complete() { builtin complete "$@"; }; ']:
+            result = self.shell(previous +
+                                'saved="$(declare -f complete || :)"; '
+                                '. "$HOME/.config/bash/init.sh"; '
+                                'test "$(declare -f complete || :)" = "$saved"; '
+                                'complete -p tsh; complete -p bundled-agent',
+                                PATH=str(bindir)+':/usr/bin:/bin')
+            self.assertEqual(result.stderr, '')
+            self.assertIn('-F _tsh_bash_autocomplete tsh', result.stdout)
+            self.assertIn('-F __bash_autocomplete bundled-agent', result.stdout)
+
     def test_homebrew_prefix_discovery(self):
         bindir = self.home / 'fake-bin'
         bindir.mkdir()
