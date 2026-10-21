@@ -1,2 +1,10 @@
-.git
-README.md
+# Repository-only paths. Stow's local list replaces the built-in defaults.
+^/\.git$
+^/\.github$
+^/\.gitignore$
+^/README\.md$
+^/Brewfile$
+^/archive$
+^/scripts$
+^/tests$
+^/LICENSE$

@@ -21,7 +21,7 @@ CP_TTY=$(tty)
 CP_TTY=${CP_TTY:5}
 
 # see if we are root
-if [ `/usr/bin/id -u` -eq 0 ]; then
+if [ "$(/usr/bin/id -u)" -eq 0 ]; then
     CP_TEXT=$DK_RED
 else
     CP_TEXT=$DK_PUR
