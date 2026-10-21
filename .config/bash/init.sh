@@ -25,6 +25,7 @@ elif [ -x /usr/local/bin/brew ]; then
 fi
 if [ -n "${HOMEBREW_PREFIX:-}" ]; then
   export HOMEBREW_PREFIX
+  _dotfiles_prepend_path "$HOMEBREW_PREFIX/sbin"
   _dotfiles_prepend_path "$HOMEBREW_PREFIX/bin"
   _dotfiles_prepend_path "$HOMEBREW_PREFIX/opt/postgresql@17/bin"
   _dotfiles_prepend_path "$HOMEBREW_PREFIX/opt/mysql-client/bin"
@@ -67,7 +68,25 @@ if [ "${BASH_VERSINFO[0]}" -ge 4 ] && [ -n "${HOMEBREW_PREFIX:-}" ]; then
 fi
 if command -v terraform >/dev/null 2>&1; then complete -C "$(command -v terraform)" terraform; fi
 if command -v tsh >/dev/null 2>&1; then
-  if _dotfiles_completion="$(tsh --completion-script-bash)"; then eval "$_dotfiles_completion"; fi
+  if _dotfiles_completion="$(tsh --completion-script-bash)"; then
+    # Some tsh versions bundle completion scripts whose command name is empty.
+    # Check expanded arguments so valid registrations and other errors survive.
+    _dotfiles_saved_complete="$(declare -f complete)" || _dotfiles_saved_complete=
+    # Called indirectly by the generated script through eval.
+    # shellcheck disable=SC2317
+    complete() {
+      if { [ "$#" -eq 4 ] || { [ "$#" -eq 5 ] && [ -z "$5" ]; }; } &&
+         [ "$1" = -F ] &&
+         [ "$2" = __bash_autocomplete ] && [ "$3" = -o ] && [ "$4" = default ]; then
+        return 0
+      fi
+      builtin complete "$@"
+    }
+    if eval "$_dotfiles_completion"; then :; fi
+    unset -f complete
+    if [ -n "$_dotfiles_saved_complete" ]; then eval "$_dotfiles_saved_complete"; fi
+    unset _dotfiles_saved_complete
+  fi
   unset _dotfiles_completion
 fi
 if command -v oh-my-posh >/dev/null 2>&1; then

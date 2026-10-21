@@ -156,17 +156,47 @@ class Dotfiles(unittest.TestCase):
         self.assertFalse(legacy.is_symlink())
         self.assertEqual(independent.read_text(), 'personal settings')
 
+    def test_tsh_completion_ignores_only_missing_generic_command(self):
+        bindir = self.home / 'bin'
+        bindir.mkdir()
+        tsh = bindir / 'tsh'
+        tsh.write_text("""#!/bin/sh
+cat <<'COMPLETION'
+__bash_autocomplete() { :; }
+_tsh_bash_autocomplete() { :; }
+PROG=
+complete -F __bash_autocomplete -o default $PROG
+complete -F __bash_autocomplete -o default "$PROG"
+complete -F __bash_autocomplete -o default bundled-agent
+complete -F _tsh_bash_autocomplete -o default tsh
+COMPLETION
+""")
+        tsh.chmod(0o755)
+        for previous in ['', 'complete() { builtin complete "$@"; }; ']:
+            result = self.shell(previous +
+                                'saved="$(declare -f complete || :)"; '
+                                '. "$HOME/.config/bash/init.sh"; '
+                                'test "$(declare -f complete || :)" = "$saved"; '
+                                'complete -p tsh; complete -p bundled-agent',
+                                PATH=str(bindir)+':/usr/bin:/bin')
+            self.assertEqual(result.stderr, '')
+            self.assertIn('-F _tsh_bash_autocomplete tsh', result.stdout)
+            self.assertIn('-F __bash_autocomplete bundled-agent', result.stdout)
+
     def test_homebrew_prefix_discovery(self):
         bindir = self.home / 'fake-bin'
         bindir.mkdir()
         prefix = self.home / 'custom-brew'
         (prefix / 'bin').mkdir(parents=True)
+        (prefix / 'sbin').mkdir()
         brew = bindir / 'brew'
         brew.write_text('#!/bin/sh\nprintf "%s\\n" "'+str(prefix)+'"\n')
         brew.chmod(0o755)
         self.shell('. "$HOME/.config/bash/init.sh"; '
                    'test "$HOMEBREW_PREFIX" = "$HOME/custom-brew"; '
-                   'case ":$PATH:" in *":$HOME/custom-brew/bin:"*) ;; *) exit 1 ;; esac',
+                   'case ":$PATH:" in *":$HOME/custom-brew/bin:$HOME/custom-brew/sbin:"*) ;; *) exit 1 ;; esac; '
+                   'original_path="$PATH"; unset DOTFILES_BASH_INITIALIZED; '
+                   '. "$HOME/.config/bash/init.sh"; test "$PATH" = "$original_path"',
                    PATH=str(bindir)+':/usr/bin:/bin')
 
     def test_native_tsh_cluster_is_preserved_and_helper_selection_is_inherited(self):
