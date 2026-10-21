@@ -2,7 +2,7 @@
 
 **A coordinated macOS terminal setup for Ghostty, herdr, and everyday infrastructure work.**
 
-Personal Bash and Zsh configuration, matching terminal and prompt colors, Teleport
+Personal Bash configuration, matching Ghostty and Oh My Posh colors, Teleport
 persona helpers, and agent workspaces with [herdr](https://herdr.dev) and
 [Teleport Beams](https://beams.run). Files are linked into place with
 [GNU Stow](https://www.gnu.org/software/stow/).
@@ -22,8 +22,8 @@ Teleport demo environments, and editor save behavior reflect this setup.
   status, and teardown through herdr keybindings.
 - **Infrastructure helpers:** Bash functions for Teleport personas, cluster
   selection, login, Connect windows, access-request discovery, and MCP demos.
-- **Shell and editor tools:** Zinit-managed Zsh plugins, optional fzf/zoxide
-  integrations, Vim preferences, and tmux with TPM plugins.
+- **Bash workflow:** login-shell setup, completion, aliases, and an Oh My Posh
+  prompt. Additional tmux, Vim, and legacy Zsh configurations are retained.
 
 ## Files
 
@@ -31,7 +31,7 @@ Teleport demo environments, and editor save behavior reflect this setup.
 | --- | --- |
 | [.bash_profile](.bash_profile) | Bash login setup: PATH, prompt, completion, database clients, Cargo and OrbStack integration. |
 | [.bashrc](.bashrc) | Bash aliases and Teleport persona, Connect, access-request and MCP helpers. |
-| [.zshrc](.zshrc) | Zinit plugins, history, completion, aliases, fzf/zoxide and Oh My Posh. |
+| [.zshrc](.zshrc) | Legacy Zsh setup; not part of the current Bash workflow. |
 | [.colorprompt](.colorprompt) | Legacy Bash prompt, retained for reference; not sourced by the active shell configs. |
 | [Ghostty config](.config/ghostty/config) | Font, window spacing, dark palette, selection, cursor and splits. |
 | [herdr config](.config/herdr/config.toml) | Matching UI, agent sidebar, notifications, tab status and Beams shortcuts. |
@@ -49,16 +49,17 @@ components you intend to use:
 | Component | Dependencies and assumptions |
 | --- | --- |
 | Bash | Homebrew Bash 4+, `bash-completion@2`; login setup also invokes `tsh`, registers Terraform completion, and sources Cargo's environment. |
-| Zsh | Homebrew Zinit; plugins are fetched on first use. Terraform completion uses `/opt/homebrew/bin/terraform`. |
 | Prompt | `oh-my-posh`; both shell configs use `sabo.toml`. |
 | Ghostty | Ghostty and the configured **MesloLGM Nerd Font Mono** font. |
 | herdr | herdr; Beams shortcuts additionally require the herdr-beams plugin and a configured Teleport Beams tenant. |
 | tmux | tmux and TPM; the plugin manager is not included in this repository. |
 | Vim | Vim and `curl`; the current config bootstraps vim-plug and installs NERDTree. |
-| Optional integrations | fzf, zoxide, OrbStack, PostgreSQL/MySQL clients, and Teleport Connect as needed. |
+| Optional Bash integrations | OrbStack, PostgreSQL/MySQL clients, and Teleport Connect as needed. |
 
 Application installation, login-shell selection, tenant enrollment, and plugin
 configuration are separate from Stow. Linking files does not install dependencies.
+Zinit, fzf, and zoxide are only referenced by the retained Zsh setup; they are not
+required by the current Bash configuration.
 
 ## Setup
 
@@ -94,8 +95,9 @@ the checkout. Keep this option when restowing too.
 
 ### 4. Initialize the applications you use
 
-- Open a new shell after installing its dependencies. Bash login shells read
-  `.bash_profile`, which sources `.bashrc`; Zsh reads `.zshrc`.
+- Open a new Bash login shell after installing its dependencies. It reads
+  `.bash_profile`, which sources `.bashrc` and initializes Oh My Posh with
+  `~/.config/ohmyposh/sabo.toml`. The legacy `.zshrc` is not loaded by Bash.
 - Install TPM if using tmux:
 
   ```sh
@@ -156,7 +158,7 @@ Adapt these before using them with another account or tenant.
 | `treq` | List requestable roles and resources. |
 | `mcp_call <app> <tool> [json-args]` | Make a demo MCP tool call through Teleport. |
 
-These helpers live in `.bashrc`; the Zsh configuration does not load them.
+These helpers live in `.bashrc` and are loaded by the Bash login setup.
 Starting or sourcing `.bashrc` clears inherited Teleport persona variables.
 `tconnect` rewrites the persona's Connect application configuration, so preserve
 any custom settings before using it. MCP tool calls can change remote resources;
@@ -175,7 +177,7 @@ tracked files immediately; restowing also handles files added or removed.
 
 | Component | Apply changes |
 | --- | --- |
-| Bash / Zsh | Open a new shell; this avoids repeatedly prepending PATH entries or resetting a live persona by re-sourcing. |
+| Bash | Open a new login shell; this avoids repeatedly prepending PATH entries or resetting a live persona by re-sourcing. |
 | herdr | Run `herdr server reload-config`. |
 | Ghostty | Use **Cmd+Shift+,** on macOS to reload configuration; some settings apply only to new windows. |
 | tmux | Run `tmux source-file "$HOME/.config/tmux/tmux.conf"`. |
@@ -193,6 +195,28 @@ stow --no-folding --target="$HOME" --delete .
 Unstowing leaves the checkout and application-generated state in place. Restore
 previous configuration from your backups if needed.
 
+## Shell startup
+
+The intended startup chain is **Ghostty → Bash login shell → `.bash_profile` → `.bashrc`**,
+with Oh My Posh initialized from `.bash_profile` using `sabo.toml`.
+
+Ghostty's config does not set an explicit shell command. Herdr also leaves
+`default_shell` empty with `shell_mode = "auto"`. The actual shell therefore
+still depends on the machine's shell selection; these files do not change it.
+Confirm from a terminal with:
+
+```sh
+printf 'Bash: %s\nLogin shell: %s\n' "$BASH_VERSION" "$SHELL"
+ps -p $$ -o comm=
+```
+
+A nonempty `BASH_VERSION` confirms the current shell is Bash; `$SHELL` describes
+the configured login shell and can differ from the current process.
+
+`.zshrc` and `.colorprompt` are retained as legacy references. Stowing the whole
+repository still links them, but the Bash startup files do not source either one.
+The Zsh-only fzf/zoxide integrations are not currently enabled for Bash.
+
 ## Personalization
 
 - **Platform paths:** replace `/opt/homebrew` assumptions for Intel macOS or Linux.
@@ -202,7 +226,7 @@ previous configuration from your backups if needed.
 - **Prompt:** change the Oh My Posh theme path in the shell config to use `zen.toml`.
 - **Editor behavior:** `.vimrc` strips trailing whitespace from every buffer on save;
   review that preference before editing Markdown or whitespace-sensitive files.
-- **Color aliases:** Bash and Zsh currently use `ls --color`; verify your installed
+- **Color aliases:** Bash currently uses `ls --color`; verify your installed
   `ls` supports it or adapt the alias for your platform.
 - **Repository-only files:** the local Stow ignore file replaces the default ignore
   list. Extend it before adding documentation, CI, or other files you do not want
