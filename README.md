@@ -56,6 +56,40 @@ stow -R .
 stow -D .
 ```
 
+## Herdr Beams shortcuts
+
+Requires the [herdr-beams plugin](https://github.com/jsabo/herdr-beams):
+
+```sh
+herdr plugin install jsabo/herdr-beams
+```
+
+| Shortcut | Action |
+| --- | --- |
+| `prefix+shift+b` | Create a Beam |
+| `prefix+a` | Choose an agent profile |
+| `prefix+shift+c` | Launch the configured Claude profile |
+| `prefix+shift+o` | Launch the configured Codex profile |
+| `prefix+s` | Show Beam status |
+| `prefix+d` | Remove a Beam |
+| `prefix+shift+q` | Remove every Beam |
+
+The default prefix is **Ctrl+B**, released before the next key.
+Select **Local** in the sidebar before invoking plugin bindings.
+The picker supports Claude Code and Codex profiles; bundled model IDs may need
+overrides to match the tenant's inference proxy. Configure direct-launch defaults
+with `BEAM_CLAUDE_PROFILE` and `BEAM_CODEX_PROFILE` in the plugin's `env` file.
+
+After pulling these dotfiles (and applying the Stow links if needed), reload Herdr:
+
+```sh
+herdr server reload-config
+```
+
+Plugin actions skip creation/deletion confirmations by default. Set `BEAMS_YES=0`
+in the plugin's `env` file to restore interactive confirmations. The profile
+bindings still ask for the workspace label and prompt.
+
 ## Notes
 
 * After running `stow .`, start a new terminal session (or `source ~/.zshrc`) to apply changes.
