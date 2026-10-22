@@ -284,56 +284,81 @@ enabled = false
 # ============================================================
 
 # Teleport Beams plugin (herdr-beams): all actions open popups.
-# prefix+a chooses a launch profile; prefix+shift+c and prefix+shift+o launch
-# the configured Claude and Codex profiles directly.
-# Select Local in the sidebar before using plugin keybindings.
-# Actions skip y/N confirmations unless BEAMS_YES=0 is set in the plugin's
-# env file; workspace labels and prompts are still collected interactively.
-# prefix+shift+q deletes every Beam; prefix+q detaches from herdr.
-# Prefix chords avoid terminal/window-manager conflicts. prefix+b toggles
-# the sidebar and prefix+shift+d closes the workspace, hence shift+b/shift+q.
+#
+# One rule: the prefix, then Shift and the first letter of the thing.
+# B)eam, C)laude, O)penAI, A)gent, S)tatus, L)ogs, E)xpose, K)ill, Q)uit.
+#
+# From plugin 0.9.0 the same keys work whichever machine is selected, because
+# each Beam runs the plugin too: with Local selected they act on any Beam, with
+# a Beam selected they act on that Beam. New Beam, delete and delete-all need
+# this laptop's Teleport login and the machines rail, so on a Beam they say so
+# and change nothing; prefix+g picks Local.
+#
+# Actions skip y/N confirmations unless BEAMS_YES=0 is set in the plugin's env
+# file; workspace labels and prompts are still collected interactively.
+#
+# Every key avoids a herdr default. A custom command claims its key before the
+# defaults are parsed and the colliding default is dropped with no warning
+# (src/config/keybinds.rs:651 and :1099-1102), so a collision costs a herdr
+# action, silently: prefix+s used to take Settings away, hence Shift+S here.
+# Shift+D would be the obvious key for delete and is close-workspace, hence
+# Shift+K for kill. prefix+b is the sidebar and prefix+q detaches, hence the
+# shifted B and Q. This is the same block as config/beam-keys.toml in the
+# plugin, which is what each Beam gets.
 # plugin_action bindings name <plugin id>.<action id>.
 [[keys.command]]
 key = "prefix+shift+b"
 type = "plugin_action"
 command = "herdr-beams.new"
-description = "new Beam"
-
-[[keys.command]]
-key = "prefix+a"
-type = "plugin_action"
-command = "herdr-beams.profiles"
-description = "choose agent profile in a Beam"
+description = "new Beam (laptop only)"
 
 [[keys.command]]
 key = "prefix+shift+c"
 type = "plugin_action"
 command = "herdr-beams.claude"
-description = "launch Claude in a Beam"
+description = "launch Claude in this Beam"
 
 [[keys.command]]
 key = "prefix+shift+o"
 type = "plugin_action"
 command = "herdr-beams.codex"
-description = "launch Codex in a Beam"
+description = "launch Codex in this Beam"
 
 [[keys.command]]
-key = "prefix+s"
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "herdr-beams.profiles"
+description = "choose an agent profile for this Beam"
+
+[[keys.command]]
+key = "prefix+shift+s"
 type = "plugin_action"
 command = "herdr-beams.status"
-description = "Beam status"
+description = "this Beam's status"
 
 [[keys.command]]
-key = "prefix+d"
+key = "prefix+shift+l"
+type = "plugin_action"
+command = "herdr-beams.services"
+description = "this Beam's services and their logs"
+
+[[keys.command]]
+key = "prefix+shift+e"
+type = "plugin_action"
+command = "herdr-beams.publish"
+description = "expose port 8080 of this Beam"
+
+[[keys.command]]
+key = "prefix+shift+k"
 type = "plugin_action"
 command = "herdr-beams.rm"
-description = "remove a Beam"
+description = "delete a Beam (laptop only)"
 
 [[keys.command]]
 key = "prefix+shift+q"
 type = "plugin_action"
 command = "herdr-beams.rm-all"
-description = "remove every Beam"
+description = "delete every Beam (laptop only)"
 
 
 # ============================================================
