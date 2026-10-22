@@ -217,12 +217,18 @@ row_gap = 0
 # Expanded Agent display:
 #   line 1: state glyph, machine (hidden for Local, shown for Beams), workspace, agent
 #   line 2: state word (idle / working / blocked / done)
+#   line 3: the harness's own name, which herdr-beams reports as a pane token
+#           (herdr resolves an unknown token name from the pane's reported
+#           tokens, src/ui/sidebar/tokens.rs); the row disappears for an agent
+#           that reports nothing, so this is safe for agents started by hand
 rows = [
   ["state_icon", { token = "machine", rules = [{ equals = "Local", hide = true }] }, "workspace", "agent"],
   ["state_text"],
+  [{ token = "$harness", dim = true }],
 ]
 
-# Claude Code also gets its own activity title (what it is doing now).
+# Claude Code sets a live terminal title (what it is doing now), which is worth
+# more than its name, so its third line shows that instead.
 [ui.sidebar.agents.rows_by_agent]
 claude = [
   ["state_icon", { token = "machine", rules = [{ equals = "Local", hide = true }] }, "workspace", "agent"],
